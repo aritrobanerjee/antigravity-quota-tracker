@@ -66,12 +66,12 @@ To make this skill automatically available to agents in **all** your workspaces:
 
 **macOS / Linux:**
 ```bash
-git clone https://github.com/<your-username>/antigravity-quota-tracker.git ~/.gemini/config/skills/quota-tracker
+git clone https://github.com/aritrobanerjee/antigravity-quota-tracker.git ~/.gemini/config/skills/quota-tracker
 ```
 
 **Windows (PowerShell):**
 ```powershell
-git clone https://github.com/<your-username>/antigravity-quota-tracker.git "$env:USERPROFILE\.gemini\config\skills\quota-tracker"
+git clone https://github.com/aritrobanerjee/antigravity-quota-tracker.git "$env:USERPROFILE\.gemini\config\skills\quota-tracker"
 ```
 
 Once installed, simply ask any Antigravity agent in chat:
@@ -87,7 +87,7 @@ Requires Python 3.8+ (uses only Python standard library: `sqlite3`, `pathlib`, `
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/antigravity-quota-tracker.git
+git clone https://github.com/aritrobanerjee/antigravity-quota-tracker.git
 cd antigravity-quota-tracker
 
 # Run the analyzer
