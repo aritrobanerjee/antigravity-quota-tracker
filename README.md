@@ -8,15 +8,21 @@ A lightweight, zero-dependency diagnostic tool and **Antigravity Skill** that an
 
 ---
 
-## Why This Exists
+## Why This Exists: Diagnosing Antigravity Quota & Rate Limit Issues
 
-When working with autonomous agent loops in Google Antigravity (under Google AI Pro or internal subscriptions), users frequently hit unexpected rate limits (RPM/TPM) or daily quota exhaustion. 
+When working with autonomous agent loops in Google Antigravity (under Google AI Pro, Google One, or internal subscriptions), developers and practitioners frequently encounter unexpected rate limits and quota exhaustion errors, such as:
+* `ResourceExhausted: 429 Quota exceeded for quota metric`
+* `Rate limit exceeded for model: gemini-3.8-pro` / `gemini-3.8-flash`
+* `Daily model quota reached` / `Temporary model throttling`
 
-Antigravity persists telemetry locally inside binary Protobuf messages within `~/.gemini/antigravity/conversations/*.db`. This tool decodes that data to reveal:
-- **Lifetime & Daily Token Consumption** (Prompt vs. Output).
-- **Model Distribution** (Gemini 3.8 Flash, Gemini 3.8 Pro, Claude 3.5/3.7 Sonnet).
-- **Thread Monolith Detection**: Identifies runaway conversation threads that re-transmit tens of thousands of history tokens on every single tool call.
-- **Hourly Velocity**: Pinpoints spikes (such as multi-agent `/teamwork-preview` runs) that exhaust rate limits.
+Because Antigravity's UI only shows a high-level meter or sudden error popups without granular telemetry, it is difficult to determine whether you exhausted your **Requests-Per-Minute (RPM)**, **Tokens-Per-Minute (TPM)**, or **Daily Token Allowance**.
+
+Antigravity actually persists comprehensive telemetry locally inside binary Protobuf messages within `~/.gemini/antigravity/conversations/*.db`. This tool decodes that database to reveal:
+- **Lifetime & Daily Token Consumption** (Prompt/Input tokens vs. Completion/Output tokens).
+- **Model Distribution & Rate Limits** (Gemini 3.8 Flash, Gemini 3.8 Pro, Claude 3.5/3.7 Sonnet).
+- **Thread Monolith Detection**: Pinpoints runaway conversation threads that re-transmit tens of thousands of conversation history tokens on every single tool call.
+- **Hourly Velocity & Multi-Agent Spikes**: Detects sudden spikes (e.g. concurrent `/teamwork-preview` subagent execution) that saturate rate limits.
+
 
 ---
 
@@ -93,6 +99,26 @@ cd antigravity-quota-tracker
 # Run the analyzer
 python scripts/analyze_quota.py
 ```
+
+---
+
+## How to Fix & Prevent Antigravity Quota Exhaustion
+
+Based on real-world telemetry audits across millions of tokens, here are the most effective strategies to prevent hitting quota limits in Antigravity:
+
+1. **Prevent "Thread Monoliths" (High Impact)**:
+   * Antigravity re-submits the full conversation transcript on every single user turn and tool call.
+   * Long threads (>100 turns) accumulate massive context windows, causing even a 1-line prompt to send 30,000–60,000+ tokens *per invocation*.
+   * **Action**: When an initiative is completed or code is written to disk, start a fresh conversation session.
+
+2. **Model Tiering (Flash for Execution, Pro for Architecture)**:
+   * **Gemini 3.8 Flash** has substantially higher Requests-Per-Minute (RPM) and daily token limits under Google AI subscriptions.
+   * **Gemini 3.8 Pro / Claude 3.7** burn quota rapidly on repetitive terminal commands or file reads.
+   * **Action**: Keep Gemini 3.8 Flash active as your primary driver for coding, editing, and execution. Switch to Pro only for initial architecture plans, then switch back to Flash.
+
+3. **Limit Unbounded Subagents**:
+   * Running multi-agent commands like `/teamwork-preview` spawns multiple parallel agents that can fire hundreds of calls within minutes.
+   * **Action**: Scope subagents to targeted folders rather than whole-repo scans.
 
 ---
 
