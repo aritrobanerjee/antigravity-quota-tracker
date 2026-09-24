@@ -21,10 +21,17 @@ Antigravity actually persists comprehensive telemetry locally inside binary Prot
 - **Lifetime & Daily Token Consumption** (Prompt/Input tokens vs. Completion/Output tokens).
 - **Model Distribution & Rate Limits** (Gemini 3.8 Flash, Gemini 3.8 Pro, Claude 3.5/3.7 Sonnet).
 - **Thread Monolith Detection**: Pinpoints runaway conversation threads that re-transmit tens of thousands of conversation history tokens on every single tool call.
-- **Hourly Velocity & Multi-Agent Spikes**: Detects sudden spikes (e.g. concurrent `/teamwork-preview` subagent execution) that saturate rate limits.
 
+### How Does This Differ from Antigravity's Built-in `/quota`?
+
+> **A Gas Gauge vs. An Engine Flight Recorder**
+> * **Built-in `/quota`**: Shows a point-in-time capacity snapshot (*"You have 15% quota remaining"*).
+> * **`antigravity-quota-tracker`**: Shows root-cause forensic attribution (*"Thread X reached 941 turns and burned 10.2M tokens because context wasn't compacted"*).
+>
+> Use `/quota` to check **how much** capacity you have left. Use `antigravity-quota-tracker` to see **where it went and how to stop burning it**.
 
 ---
+
 
 ## Sample Output
 
