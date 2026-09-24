@@ -25,6 +25,22 @@ Antigravity actually persists comprehensive telemetry locally inside binary Prot
 
 ---
 
+### Understanding the Nuance: CLI `/usage` vs. This Tool
+
+Google Antigravity provides a built-in `/usage` command in its official documentation (`https://antigravity.google/docs/cli/commands/usage/`), but there is a major nuance between surfaces and functionality:
+
+| Dimension | Antigravity CLI `/usage` | `antigravity-quota-tracker` |
+| :--- | :--- | :--- |
+| **Supported Surface** | **Terminal CLI Only (`agy`)**.<br>*(Not available inside the Antigravity IDE chat).* | **Everywhere**.<br>Works as an in-chat **Antigravity Skill** inside the IDE, and as a standalone CLI script. |
+| **Diagnostic Type** | **Gas Gauge**: Shows a point-in-time snapshot of remaining capacity. | **Flight Recorder**: Forensically audits past sessions, models, and threads to find root causes. |
+| **Thread Attribution** | None. Cannot identify bloated conversation threads. | **Yes**. Identifies runaway threads (>100–900 turns) re-transmitting massive prompt histories. |
+| **Multi-Agent Spikes** | None. Cannot isolate subagent loop costs. | **Yes**. Diagnoses token velocity spikes caused by parallel subagent spawns (e.g. `/teamwork-preview`). |
+| **Privacy & Access** | Server-side quota query. | **100% Local & Zero-Dependency**. Decodes local SQLite/Protobuf telemetry offline with pure Python standard library. |
+
+**Bottom Line**: The CLI's `/usage` tells you *how much capacity you have left*. `antigravity-quota-tracker` brings that visibility directly into your **IDE agent chat** and tells you *where your tokens went and how to prevent burning them*.
+
+---
+
 
 ## Sample Output
 
