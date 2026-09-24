@@ -73,9 +73,9 @@ Google Antigravity provides a built-in `/usage` command in its official document
 [TOKEN DRAIN BY TOP CONVERSATION THREADS]
   Conversation Title                         | Calls    | Total Tokens    | Avg Prompt Tokens
   ------------------------------------------------------------------------------------------
-  Feature Architecture Discussion            | 941      | 10,242,814      | 10,337         
-  Markdown Resume Development Workflow       | 296      | 3,270,853       | 10,400         
-  Using Local Models In Antigravity          | 220      | 3,249,956       | 14,373         
+  Thread #1 (b4f30511...)                    | 941      | 10,242,814      | 10,337         
+  Thread #2 (780a5003...)                    | 296      | 3,270,853       | 10,400         
+  Thread #3 (803b9701...)                    | 220      | 3,249,956       | 14,373         
 ```
 
 ---
